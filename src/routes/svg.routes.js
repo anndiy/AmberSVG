@@ -1,15 +1,15 @@
 const express = require("express");
+const generateWave = require("../generators/wave");
 
 const router = express.Router();
 
 router.get("/wave", (req, res) => {
-  res.set("Content-Type", "image/svg+xml");
+  const svg = generateWave(req.query);
 
-  res.send(`
-    <svg width="400" height="120" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 60 Q100 0 200 60 T400 60" fill="none" stroke="black"/>
-    </svg>
-  `);
+  res.set("Content-Type", "image/svg+xml");
+  res.set("Cache-Control", "public, max-age=86400");
+
+  res.send(svg);
 });
 
 module.exports = router;
